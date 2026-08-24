@@ -9,13 +9,11 @@
 
     <title>House Price Prediction</title>
 
-
     <style>
 
         * {
             box-sizing: border-box;
         }
-
 
         body {
             margin: 0;
@@ -30,7 +28,6 @@
             padding: 30px;
         }
 
-
         .container {
             width: 100%;
             max-width: 700px;
@@ -44,12 +41,10 @@
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
         }
 
-
         h1 {
             text-align: center;
             margin-bottom: 10px;
         }
-
 
         .subtitle {
             text-align: center;
@@ -57,27 +52,21 @@
             margin-bottom: 30px;
         }
 
-
         .form-grid {
             display: grid;
-
             grid-template-columns: 1fr 1fr;
-
             gap: 18px;
         }
-
 
         .form-group {
             display: flex;
             flex-direction: column;
         }
 
-
         label {
             margin-bottom: 7px;
             font-weight: bold;
         }
-
 
         input {
             padding: 12px;
@@ -89,13 +78,11 @@
             font-size: 15px;
         }
 
-
         input:focus {
             outline: none;
 
             border-color: #4a90e2;
         }
-
 
         button {
             width: 100%;
@@ -119,11 +106,14 @@
             cursor: pointer;
         }
 
-
         button:hover {
             background: #1d4ed8;
         }
 
+        button:disabled {
+            background: #93c5fd;
+            cursor: not-allowed;
+        }
 
         #result {
             margin-top: 25px;
@@ -139,7 +129,6 @@
             display: none;
         }
 
-
         #price {
             font-size: 25px;
 
@@ -147,7 +136,6 @@
 
             margin-top: 8px;
         }
-
 
         #error {
             margin-top: 20px;
@@ -164,7 +152,6 @@
 
             display: none;
         }
-
 
         @media (max-width: 600px) {
 
@@ -347,7 +334,7 @@
     </div>
 
 
-    <button onclick="predictPrice()">
+    <button id="predictButton" onclick="predictPrice()">
 
         Predict House Price
 
@@ -374,23 +361,42 @@
 <script>
 
 
+// ======================================================
+// FASTAPI BACKEND URL
+// ======================================================
+
+const API_URL =
+    "https://house-price-prediction-gkou.onrender.com/predict";
+
+
+// ======================================================
+// PREDICT HOUSE PRICE
+// ======================================================
+
 async function predictPrice() {
 
+    const result =
+        document.getElementById("result");
 
-    const result = document.getElementById("result");
+    const price =
+        document.getElementById("price");
 
-    const price = document.getElementById("price");
+    const error =
+        document.getElementById("error");
 
-    const error = document.getElementById("error");
+    const button =
+        document.getElementById("predictButton");
 
 
     // Hide previous messages
+
     result.style.display = "none";
 
     error.style.display = "none";
 
 
-    // Get values from the form
+    // Get values from form
+
     const data = {
 
         area: Number(
@@ -432,14 +438,37 @@ async function predictPrice() {
     };
 
 
+    // Check that all values were entered
+
+    for (const key in data) {
+
+        if (!Number.isFinite(data[key])) {
+
+            error.textContent =
+                "Please enter valid values for all fields.";
+
+            error.style.display = "block";
+
+            return;
+        }
+
+    }
+
+
     try {
 
+        // Disable button while prediction is running
 
-        // Send data to FastAPI backend
+        button.disabled = true;
+
+        button.textContent = "Predicting...";
+
+
+        // Send request to FastAPI
+
         const response = await fetch(
-            "https://house-price-prediction-gkou.onrender.com/predict",
+            API_URL,
             {
-
                 method: "POST",
 
                 headers: {
@@ -447,16 +476,18 @@ async function predictPrice() {
                 },
 
                 body: JSON.stringify(data)
-
             }
         );
 
 
-        // Read response
-        const responseData = await response.json();
+        // Convert response to JSON
+
+        const responseData =
+            await response.json();
 
 
-        // Check if API returned an error
+        // Check for backend error
+
         if (!response.ok) {
 
             throw new Error(
@@ -467,7 +498,8 @@ async function predictPrice() {
         }
 
 
-        // Display predicted price
+        // Display prediction
+
         price.textContent =
             "₹ " +
             Number(
@@ -481,6 +513,11 @@ async function predictPrice() {
     }
     catch (err) {
 
+        console.error(
+            "Prediction error:",
+            err
+        );
+
 
         error.textContent =
             "Error: " + err.message;
@@ -488,8 +525,13 @@ async function predictPrice() {
 
         error.style.display = "block";
 
+    }
+    finally {
 
-        console.error(err);
+        button.disabled = false;
+
+        button.textContent =
+            "Predict House Price";
 
     }
 
