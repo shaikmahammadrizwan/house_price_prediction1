@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>House Price Prediction</title>
 
+
     <style>
+
         * {
             box-sizing: border-box;
         }
+
 
         body {
             margin: 0;
@@ -24,6 +30,7 @@
             padding: 30px;
         }
 
+
         .container {
             width: 100%;
             max-width: 700px;
@@ -37,16 +44,19 @@
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
         }
 
+
         h1 {
             text-align: center;
             margin-bottom: 10px;
         }
+
 
         .subtitle {
             text-align: center;
             color: #666;
             margin-bottom: 30px;
         }
+
 
         .form-grid {
             display: grid;
@@ -56,16 +66,18 @@
             gap: 18px;
         }
 
+
         .form-group {
             display: flex;
             flex-direction: column;
         }
 
+
         label {
             margin-bottom: 7px;
-
             font-weight: bold;
         }
+
 
         input {
             padding: 12px;
@@ -77,11 +89,13 @@
             font-size: 15px;
         }
 
+
         input:focus {
             outline: none;
 
             border-color: #4a90e2;
         }
+
 
         button {
             width: 100%;
@@ -105,15 +119,11 @@
             cursor: pointer;
         }
 
+
         button:hover {
             background: #1d4ed8;
         }
 
-        button:disabled {
-            background: #93a3c4;
-
-            cursor: not-allowed;
-        }
 
         #result {
             margin-top: 25px;
@@ -129,24 +139,24 @@
             display: none;
         }
 
+
         #price {
             font-size: 25px;
 
             font-weight: bold;
 
             margin-top: 8px;
-
-            color: #166534;
         }
+
 
         #error {
             margin-top: 20px;
 
-            padding: 12px;
-
-            color: #b91c1c;
+            padding: 15px;
 
             background: #fef2f2;
+
+            color: red;
 
             border-radius: 8px;
 
@@ -154,6 +164,7 @@
 
             display: none;
         }
+
 
         @media (max-width: 600px) {
 
@@ -164,15 +175,22 @@
             .container {
                 padding: 25px;
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
+
     <h1>🏠 House Price Prediction</h1>
+
 
     <p class="subtitle">
         Enter the house details to predict its price
@@ -181,152 +199,160 @@
 
     <div class="form-grid">
 
-        <!-- Area -->
+
         <div class="form-group">
-            <label for="area">Area (sqft)</label>
+
+            <label for="area">
+                Area (sqft)
+            </label>
 
             <input
                 type="number"
                 id="area"
                 step="any"
-                min="0"
-                placeholder="Example: 1500"
                 required
             >
+
         </div>
 
 
-        <!-- Bedrooms -->
         <div class="form-group">
-            <label for="bedrooms">Bedrooms</label>
+
+            <label for="bedrooms">
+                Bedrooms
+            </label>
 
             <input
                 type="number"
                 id="bedrooms"
                 step="1"
-                min="0"
-                placeholder="Example: 3"
                 required
             >
+
         </div>
 
 
-        <!-- Bathrooms -->
         <div class="form-group">
-            <label for="bathrooms">Bathrooms</label>
+
+            <label for="bathrooms">
+                Bathrooms
+            </label>
 
             <input
                 type="number"
                 id="bathrooms"
                 step="1"
-                min="0"
-                placeholder="Example: 2"
                 required
             >
+
         </div>
 
 
-        <!-- House Age -->
         <div class="form-group">
-            <label for="house_age">House Age</label>
+
+            <label for="house_age">
+                House Age
+            </label>
 
             <input
                 type="number"
                 id="house_age"
                 step="any"
-                min="0"
-                placeholder="Example: 10"
                 required
             >
+
         </div>
 
 
-        <!-- Distance to City -->
         <div class="form-group">
-            <label for="distance_to_city">Distance to City</label>
+
+            <label for="distance_to_city">
+                Distance to City
+            </label>
 
             <input
                 type="number"
                 id="distance_to_city"
                 step="any"
-                min="0"
-                placeholder="Example: 5"
                 required
             >
+
         </div>
 
 
-        <!-- Parking -->
         <div class="form-group">
-            <label for="parking">Parking</label>
+
+            <label for="parking">
+                Parking
+            </label>
 
             <input
                 type="number"
                 id="parking"
                 step="1"
-                min="0"
-                placeholder="Example: 2"
                 required
             >
+
         </div>
 
 
-        <!-- Floor -->
         <div class="form-group">
-            <label for="floor">Floor</label>
+
+            <label for="floor">
+                Floor
+            </label>
 
             <input
                 type="number"
                 id="floor"
                 step="1"
-                min="0"
-                placeholder="Example: 2"
                 required
             >
+
         </div>
 
 
-        <!-- Nearby Schools -->
         <div class="form-group">
-            <label for="nearby_schools">Nearby Schools</label>
+
+            <label for="nearby_schools">
+                Nearby Schools
+            </label>
 
             <input
                 type="number"
                 id="nearby_schools"
                 step="1"
-                min="0"
-                placeholder="Example: 3"
                 required
             >
+
         </div>
 
 
-        <!-- Crime Rate -->
         <div class="form-group">
-            <label for="crime_rate">Crime Rate</label>
+
+            <label for="crime_rate">
+                Crime Rate
+            </label>
 
             <input
                 type="number"
                 id="crime_rate"
                 step="any"
-                min="0"
-                placeholder="Example: 2.5"
                 required
             >
+
         </div>
+
 
     </div>
 
 
-    <button
-        id="predictButton"
-        onclick="predictPrice()"
-    >
+    <button onclick="predictPrice()">
+
         Predict House Price
+
     </button>
 
-
-    <!-- Prediction Result -->
 
     <div id="result">
 
@@ -334,23 +360,22 @@
             Predicted House Price
         </div>
 
-        <div id="price">
-        </div>
+        <div id="price"></div>
 
     </div>
 
 
-    <!-- Error -->
+    <div id="error"></div>
 
-    <div id="error">
-    </div>
 
 </div>
 
 
 <script>
 
+
 async function predictPrice() {
+
 
     const result = document.getElementById("result");
 
@@ -358,170 +383,103 @@ async function predictPrice() {
 
     const error = document.getElementById("error");
 
-    const button = document.getElementById("predictButton");
 
-
-    // Hide previous result/error
-
+    // Hide previous messages
     result.style.display = "none";
 
     error.style.display = "none";
 
 
-    // Get input values
+    // Get values from the form
+    const data = {
 
-    const area = Number(
-        document.getElementById("area").value
-    );
+        area: Number(
+            document.getElementById("area").value
+        ),
 
-    const bedrooms = Number(
-        document.getElementById("bedrooms").value
-    );
+        bedrooms: Number(
+            document.getElementById("bedrooms").value
+        ),
 
-    const bathrooms = Number(
-        document.getElementById("bathrooms").value
-    );
+        bathrooms: Number(
+            document.getElementById("bathrooms").value
+        ),
 
-    const houseAge = Number(
-        document.getElementById("house_age").value
-    );
+        house_age: Number(
+            document.getElementById("house_age").value
+        ),
 
-    const distanceToCity = Number(
-        document.getElementById("distance_to_city").value
-    );
+        distance_to_city: Number(
+            document.getElementById("distance_to_city").value
+        ),
 
-    const parking = Number(
-        document.getElementById("parking").value
-    );
+        parking: Number(
+            document.getElementById("parking").value
+        ),
 
-    const floor = Number(
-        document.getElementById("floor").value
-    );
+        floor: Number(
+            document.getElementById("floor").value
+        ),
 
-    const nearbySchools = Number(
-        document.getElementById("nearby_schools").value
-    );
+        nearby_schools: Number(
+            document.getElementById("nearby_schools").value
+        ),
 
-    const crimeRate = Number(
-        document.getElementById("crime_rate").value
-    );
+        crime_rate: Number(
+            document.getElementById("crime_rate").value
+        )
 
-
-    // Check that all fields are filled
-
-    if (
-        !area ||
-        !bedrooms ||
-        !bathrooms ||
-        !houseAge ||
-        !distanceToCity ||
-        !parking ||
-        !floor ||
-        !nearbySchools ||
-        !crimeRate
-    ) {
-
-        error.textContent =
-            "Please enter values in all fields.";
-
-        error.style.display = "block";
-
-        return;
-    }
-
-
-    // Disable button while requesting prediction
-
-    button.disabled = true;
-
-    button.textContent = "Predicting...";
+    };
 
 
     try {
 
-        /*
-            Your FastAPI function currently accepts
-            these values as QUERY PARAMETERS.
 
-            Therefore we send them in the URL.
-        */
+        // Send data to FastAPI backend
+        const response = await fetch(
+            "https://house-price-prediction-gkou.onrender.com/predict",
+            {
 
-        const url =
-            "https://house-price-prediction-gkou.onrender.com/predict" +
+                method: "POST",
 
-            "?area_sqft=" + encodeURIComponent(area) +
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-            "&bedrooms=" + encodeURIComponent(bedrooms) +
+                body: JSON.stringify(data)
 
-            "&bathrooms=" + encodeURIComponent(bathrooms) +
-
-            "&age_of_house=" + encodeURIComponent(houseAge) +
-
-            "&distance_to_city=" + encodeURIComponent(distanceToCity) +
-
-            "&parking=" + encodeURIComponent(parking) +
-
-            "&floor=" + encodeURIComponent(floor) +
-
-            "&nearby_schools=" + encodeURIComponent(nearbySchools) +
-
-            "&crime_rate=" + encodeURIComponent(crimeRate);
+            }
+        );
 
 
-        // Call FastAPI
-
-        const response = await fetch(url, {
-
-            method: "POST"
-
-        });
-
-
-        // Convert response to JSON
-
+        // Read response
         const responseData = await response.json();
 
 
-        // Check for API error
-
+        // Check if API returned an error
         if (!response.ok) {
 
             throw new Error(
                 responseData.detail ||
                 "Prediction failed"
             );
+
         }
 
 
-        /*
-            Your FastAPI returns:
-
-            {
-                "predicted_house_price": ...
-            }
-
-            So we use predicted_house_price here.
-        */
-
-        const predictedPrice =
-            responseData.predicted_house_price;
-
-
-        // Display price
-
+        // Display predicted price
         price.textContent =
             "₹ " +
-            Number(predictedPrice).toLocaleString("en-IN", {
-                maximumFractionDigits: 2
-            });
+            Number(
+                responseData.predicted_house_price
+            ).toLocaleString("en-IN");
 
 
         result.style.display = "block";
 
 
-    } catch (err) {
-
-        console.error(err);
+    }
+    catch (err) {
 
 
         error.textContent =
@@ -531,19 +489,16 @@ async function predictPrice() {
         error.style.display = "block";
 
 
-    } finally {
+        console.error(err);
 
-        // Enable button again
-
-        button.disabled = false;
-
-        button.textContent =
-            "Predict House Price";
     }
 
 }
 
+
 </script>
 
+
 </body>
+
 </html>

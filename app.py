@@ -3,22 +3,27 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import joblib
 
+
+# Create FastAPI application
 app = FastAPI()
 
-# Allow frontend to communicate with the API
+
+# Allow the frontend to access this API
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Load trained model and scaler
+
+# Load the trained model and scaler
 model = joblib.load("linear_regression_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
 
+# Define the input data received from the frontend
 class HouseData(BaseModel):
     area: float
     bedrooms: int
@@ -31,14 +36,19 @@ class HouseData(BaseModel):
     crime_rate: float
 
 
+# Home route
 @app.get("/")
 def home():
-    return {"message": "House Price Prediction API is running"}
+    return {
+        "message": "House Price Prediction API is running"
+    }
 
 
+# Prediction route
 @app.post("/predict")
 def predict(data: HouseData):
 
+    # Create input in the same order used during model training
     new_house = [[
         data.area,
         data.bedrooms,
@@ -51,10 +61,13 @@ def predict(data: HouseData):
         data.crime_rate
     ]]
 
+    # Scale the input
     new_house_scaled = scaler.transform(new_house)
 
+    # Make prediction
     prediction = model.predict(new_house_scaled)
 
+    # Return prediction to frontend
     return {
-        "predicted_price": float(prediction[0])
+        "predicted_house_price": float(prediction[0])
     }
