@@ -1,68 +1,43 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse  # <-- ADD THIS LINE
-from pydantic import BaseModel
+from flask import Flask, render_template, request
 import joblib
+import numpy as np
 
+app = Flask(__name__)
 
-# Create FastAPI application
-app = FastAPI()
-
-
-# Allow frontend to communicate with backend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-# Load trained model and scaler
+# Load model and scaler
 model = joblib.load("linear_regression_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-
-# Input data structure
-class HouseData(BaseModel):
-    area: float
-    bedrooms: int
-    bathrooms: int
-    house_age: float
-    distance_to_city: float
-    parking: int
-    floor: int
-    nearby_schools: int
-    crime_rate: float
-
-
-# Home route
-@app.get("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
-    return FileResponse("index.html")  # <-- CHANGE THIS LINE
+    prediction_text = None
+    error_text = None
 
+    if request.method == "POST":
+        try:
+            # Extract inputs from HTML form
+            features = [
+                float(request.form["area"]),
+                float(request.form["bedrooms"]),
+                float(request.form["bathrooms"]),
+                float(request.form["house_age"]),
+                float(request.form["distance_to_city"]),
+                float(request.form["parking"]),
+                float(request.form["floor"]),
+                float(request.form["nearby_schools"]),
+                float(request.form["crime_rate"])
+            ]
+            
+            # Scale and predict
+            scaled_features = scaler.transform([features])
+            prediction = model.predict(scaled_features)[0]
+            
+            # Format output in Indian Rupees
+            prediction_text = f"₹ {round(prediction, 2):,}"
+        except Exception as e:
+            error_text = f"Error: {str(e)}"
 
-# Prediction route
-@app.post("/predict")
-def predict(data: HouseData):
+    return render_template("index.html", prediction=prediction_text, error=error_text)
 
-    new_house = [[
-        data.area,
-        data.bedrooms,
-        data.bathrooms,
-        data.house_age,
-        data.distance_to_city,
-        data.parking,
-        data.floor,
-        data.nearby_schools,
-        data.crime_rate
-    ]]
-
-    new_house_scaled = scaler.transform(new_house)
-
-    prediction = model.predict(new_house_scaled)
-
-    return {
-        "predicted_house_price": float(prediction[0])
-    }
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
