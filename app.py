@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse  # <-- ADD THIS LINE
 from pydantic import BaseModel
 import joblib
 
@@ -39,9 +40,7 @@ class HouseData(BaseModel):
 # Home route
 @app.get("/")
 def home():
-    return {
-        "message": "House Price Prediction API is running"
-    }
+    return FileResponse("index.html")  # <-- CHANGE THIS LINE
 
 
 # Prediction route
